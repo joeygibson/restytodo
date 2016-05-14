@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+PORT=8080
+
+if [ "$1" != "" ]; then
+    PORT=${1}
+fi
+
+echo "Local port is ${PORT}"
+
+docker run -p ${PORT}:8080 -it restygo
