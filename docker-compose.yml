@@ -1,0 +1,22 @@
+app:
+    image: restygo
+
+bbtest:
+  image: cucumber-turnip-tester:latest
+  links:
+    - app
+  volumes:
+    - .:/opt/project/
+    - /var/run/docker.sock:/var/run/docker.sock
+  working_dir: /opt/project
+  command: ["-r", "/opt/project/bbtest/features", "/opt/project/bbtest/features"]
+
+foo:
+  image: cucumber-turnip-tester:latest
+  links:
+    - app
+  volumes:
+    - .:/opt/project/
+    - /var/run/docker.sock:/var/run/docker.sock
+  working_dir: /opt/project
+  entrypoint: ["/bin/bash"]
