@@ -1,5 +1,7 @@
 app:
-    image: restygo
+  image: restygo
+  volumes:
+    - .:/opt/project/
 
 bbtest:
   image: cucumber-turnip-tester:latest
