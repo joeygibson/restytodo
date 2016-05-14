@@ -12,12 +12,12 @@ Then(/^it should succeed$/) do
 end
 
 Then(/^it should fail$/) do
-    expect(@rc).not_to be_failure
+    expect(@rc).not_to be_success
 end
 
 When(/^I get (.+) on port (\d+)$/) do |url, port|
     EventuallyHelper.eventually(timeout: 10) {
-        @output = %x{curl app:#{port}#{url} 2> /dev/null}
+        @output = %x{curl -f app:#{port}#{url} 2> /dev/null}
         @rc = $?
     }
 end

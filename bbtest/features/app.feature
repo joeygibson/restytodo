@@ -22,3 +22,9 @@ Feature: a running app
         When I get /todos/1 on port 8080
         Then it should succeed
         And there should be 1 todo with id 1
+
+    Scenario: Get bogus todo from list
+        Given the app is listening on port 8080
+        Then it should succeed
+        When I get /todos/23 on port 8080
+        Then it should fail
