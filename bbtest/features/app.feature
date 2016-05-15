@@ -39,4 +39,6 @@ Feature: a running app
         When I post it to /todos on port 8080
         Then it should succeed
         And the id of the todo should be 3
-        
+        When I get /todos/3 on port 8080
+        Then it should succeed
+        And there should be 1 todo with id 3
