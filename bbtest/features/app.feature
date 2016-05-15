@@ -28,3 +28,15 @@ Feature: a running app
         Then it should succeed
         When I get /todos/23 on port 8080
         Then it should fail
+
+    Scenario: Post a new todo
+        Given a JSON document with:
+        """json
+        {
+            "name": "New Todo"
+        }
+        """
+        When I post it to /todos on port 8080
+        Then it should succeed
+        And the id of the todo should be 3
+        

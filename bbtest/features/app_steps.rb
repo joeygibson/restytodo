@@ -50,6 +50,20 @@ Then(/^there should be 1 todo with id (#{CAPTURE_A_NUMBER})$/) do |expected|
     expect(hash["id"]).to eq(expected)
 end
 
+Given(/^a JSON document with:$/) do |jsonString|
+  @json = jsonString
+end
+
+When(/^I post it to (.+) on port (\d+)$/) do |url, port|
+  @output = %x{curl -f -H "Content-Type: application/json" -d '#{@json}' app:#{port}#{url} 2> /dev/null}
+  @rc = $?
+end
+
+Then(/^the id of the todo should be (#{CAPTURE_A_NUMBER})$/) do |expected|
+  hash = JSON.parse(@output)
+  expect(hash["id"]).to eq(expected)
+end
+
 Then(/^it should succeed with \"(.+)\"$/) do |expected|
   send "it should succeed"
   send "the output should contain :expected", expected
