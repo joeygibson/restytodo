@@ -14,3 +14,5 @@ module EventuallyHelper
     EventuallyHelper.eventually(*args, &blk)
   end
 end
+
+World(EventuallyHelper)

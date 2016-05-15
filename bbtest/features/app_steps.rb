@@ -1,7 +1,11 @@
 require 'json'
 
+CAPTURE_A_NUMBER = Transform /^\d+$/ do |number|
+    number.to_i
+end
+
 Given(/^the app is listening on port (\d+)$/) do |port|
-    EventuallyHelper.eventually(timeout: 10) {
+    eventually(timeout: 10) {
         @output = %x{nc -z app #{port}}
         @rc = $?
     }
@@ -16,7 +20,7 @@ Then(/^it should fail$/) do
 end
 
 When(/^I get (.+) on port (\d+)$/) do |url, port|
-    EventuallyHelper.eventually(timeout: 10) {
+    eventually(timeout: 10) {
         @output = %x{curl -f app:#{port}#{url} 2> /dev/null}
         @rc = $?
     }
@@ -36,14 +40,14 @@ Then(/^the output should contain all of these:$/) do |table|
   end
 end
 
-Then(/^there should be (\d+) todos$/) do |expected|
+Then(/^there should be (#{CAPTURE_A_NUMBER}) todos$/) do |expected|
     hash = JSON.parse(@output)
-    expect(hash.length).to eq(expected.to_i)
+    expect(hash.length).to eq(expected)
 end
 
-Then(/^there should be 1 todo with id (\d+)$/) do |expected|
+Then(/^there should be 1 todo with id (#{CAPTURE_A_NUMBER})$/) do |expected|
     hash = JSON.parse(@output)
-    expect(hash["id"]).to eq(expected.to_i)
+    expect(hash["id"]).to eq(expected)
 end
 
 Then(/^it should succeed with \"(.+)\"$/) do |expected|
