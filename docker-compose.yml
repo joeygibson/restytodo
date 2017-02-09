@@ -3,8 +3,8 @@ app:
   volumes:
     - .:/opt/project/
 
-bbtest:
-  image: cucumber-turnip-tester:latest
+blackbox-test:
+  image: joeygibson/cucumber-turnip-tester
   links:
     - app
   volumes:

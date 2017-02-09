@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-docker-compose run --rm bbtest
+docker-compose run --rm blackbox-test
 docker-compose kill
