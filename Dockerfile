@@ -1,7 +1,5 @@
-FROM library/alpine:latest
+FROM library/debian:jessie
 
 EXPOSE 8080
-
-# COPY restytodo /opt/bin/restytodo
 
 ENTRYPOINT ["/opt/project/restytodo"]

@@ -6,7 +6,7 @@ end
 
 Given(/^the app is listening on port (\d+)$/) do |port|
     eventually(timeout: 10) {
-        @output = %x{nc -z app #{port}}
+        @output = %x{nc -z prodserver #{port}}
         @rc = $?
     }
 end
@@ -21,7 +21,7 @@ end
 
 When(/^I get (.+) on port (\d+)$/) do |url, port|
     eventually(timeout: 10) {
-        @output = %x{curl -f app:#{port}#{url} 2> /dev/null}
+        @output = %x{curl -f prodserver:#{port}#{url} 2> /dev/null}
         @rc = $?
     }
 end
@@ -55,7 +55,7 @@ Given(/^a JSON document with:$/) do |jsonString|
 end
 
 When(/^I post it to (.+) on port (\d+)$/) do |url, port|
-  @output = %x{curl -f -H "Content-Type: application/json" -d '#{@json}' app:#{port}#{url} 2> /dev/null}
+  @output = %x{curl -f -H "Content-Type: application/json" -d '#{@json}' prodserver:#{port}#{url} 2> /dev/null}
   @rc = $?
 end
 

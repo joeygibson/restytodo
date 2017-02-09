@@ -1,24 +1,61 @@
-app:
-  image: restygo
-  volumes:
-    - .:/opt/project/
+version: '2'
+services:
+  go: 
+    build: dev-env
+    volumes:
+      - .:/go/src/github.com/joeygibson/restytodo
+    working_dir: /go/src/github.com/joeygibson/restytodo
+    environment:
+      - GOOS
+      - GOARCH
+    entrypoint: /bin/bash
 
-blackbox-test:
-  image: joeygibson/cucumber-turnip-tester
-  links:
-    - app
-  volumes:
-    - .:/opt/project/
-    - /var/run/docker.sock:/var/run/docker.sock
-  working_dir: /opt/project
-  command: ["-r", "/opt/project/bbtest/features", "/opt/project/bbtest/features"]
+  installdependencies:
+    extends:
+      service: go
+    entrypoint: glide
+    command: up
 
-foo:
-  image: cucumber-turnip-tester:latest
-  links:
-    - app
-  volumes:
-    - .:/opt/project/
-    - /var/run/docker.sock:/var/run/docker.sock
-  working_dir: /opt/project
-  entrypoint: ["/bin/bash"]
+  package:
+    extends:
+      service: go
+    entrypoint: ["go"]
+    command: ["build"]
+
+  package-local:
+    extends:
+      service: go
+    environment:
+      - GOOS
+      - GOARCH
+    entrypoint: ["go"]
+    command: ["build"]
+
+  test:
+    extends:
+      service: go
+    entrypoint: ["/bin/true"]
+
+  clean:
+    extends:
+      service: go
+    entrypoint: ["go"]
+    command: "clean"
+    
+  prodserver:
+    image: restytodo
+    volumes:
+      - .:/opt/project/
+    ports:
+      - 8080
+
+  blackbox-test:
+    image: joeygibson/cucumber-turnip-tester
+    depends_on:
+      - prodserver
+    volumes:
+      - .:/opt/project/
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /opt/project
+    command: ["-r", "/opt/project/blackbox-test/features", "/opt/project/blackbox-test/features"]
+
