@@ -50,7 +50,7 @@ services:
       - 8080
 
   blackbox-test:
-    image: joeygibson/cucumber-turnip-tester
+    image: cucumber-tester
     depends_on:
       - prodserver
     volumes:

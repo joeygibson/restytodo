@@ -1,5 +1,5 @@
 <% common_parameters = "--verbose --strict --no-source --color --format pretty --require features --require support --expand" %>
 <% html = "--format html --out ../test-reports/cucumber-report.html" %>
 
-default: <%= common_parameters %> <%= html %> -t ~@wip -t ~@long_test
+default: <%= common_parameters %> <%= html %> -t ~@long_test
 local: <%= common_parameters %> -t ~@long_test

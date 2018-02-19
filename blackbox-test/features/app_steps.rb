@@ -1,9 +1,5 @@
 require 'json'
 
-CAPTURE_A_NUMBER = Transform /^\d+$/ do |number|
-    number.to_i
-end
-
 Given(/^the app is listening on port (\d+)$/) do |port|
     eventually(timeout: 10) {
         @output = %x{nc -z prodserver #{port}}
@@ -40,12 +36,12 @@ Then(/^the output should contain all of these:$/) do |table|
   end
 end
 
-Then(/^there should be (#{CAPTURE_A_NUMBER}) todos$/) do |expected|
+Then(/^there should be (\d+) todos$/) do |expected|
     hash = JSON.parse(@output)
     expect(hash.length).to eq(expected)
 end
 
-Then(/^there should be 1 todo with id (#{CAPTURE_A_NUMBER})$/) do |expected|
+Then(/^there should be 1 todo with id (\d+)$/) do |expected|
     hash = JSON.parse(@output)
     expect(hash["id"]).to eq(expected)
 end
@@ -59,7 +55,7 @@ When(/^I post it to (.+) on port (\d+)$/) do |url, port|
   @rc = $?
 end
 
-Then(/^the id of the todo should be (#{CAPTURE_A_NUMBER})$/) do |expected|
+Then(/^the id of the todo should be (\d+)$/) do |expected|
   hash = JSON.parse(@output)
   expect(hash["id"]).to eq(expected)
 end
